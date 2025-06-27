@@ -1,11 +1,26 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateGoodTables extends Migration
 {
+    const GOOD_TYPE = [
+        'disk' => 'Диски',
+        'tyre' => 'Шины'
+    ];
+
+    const TYRE_TYPE = [
+        'summertires',
+        'wintertires',
+    ];
+
+    const DISK_TYPE = [
+        'disks',
+    ];
+
     /**
      * Run the migrations.
      *
@@ -13,26 +28,83 @@ class CreateGoodTables extends Migration
      */
     public function up()
     {
-        $results = DB::connection('tyres')
+        Schema::create('good_type', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('name_ru');
+        });
+
+        foreach (self::GOOD_TYPE as $name => $nameRu) {
+            DB::table('good_type')->insert([
+                'name' => $name,
+                'name_ru' => $nameRu,
+            ]);
+        }
+
+        Schema::create('brand', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('id_good_type');
+            $table->foreign('id_good_type')
+                ->references('id')
+                ->on('good_type');
+        });
+
+        Schema::create('model', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('id_brand');
+            $table->foreign('id_brand')
+                ->references('id')
+                ->on('brand');
+        });
+
+        $moduleCatalogInfo = DB::connection('tyres')
             ->table('module_catalog_info')
-            ->select('*')
+            ->select('brand', 'model', 'goods_type')
             ->whereNotNull('model')
             ->where('model', '!=', '')
             ->whereNotNull('brand')
             ->where('brand', '!=', '')
             ->groupBy('model')
-            ->orderBy('model', 'ASC')
+            ->orderBy('model', 'asc')
             ->get();
 
-        echo '<pre>';
-        var_dump($results);
-        die;
+        foreach ($moduleCatalogInfo as $infoItem) {
+            $idGoodType = null;
+            if (in_array($infoItem->goods_type, self::TYRE_TYPE)) {
+                $idGoodType = 2;
+            }
+            if (in_array($infoItem->goods_type, self::DISK_TYPE)) {
+                $idGoodType = 1;
+            }
 
-//        Schema::create('good', function (Blueprint $table) {
-//            $table->id();
-//            $table->string('');
-//            $table->timestamps();
-//        });
+            if ($idGoodType) {
+                $brandId = DB::table('brand')
+                    ->where('name', $infoItem->brand)
+                    ->where('id_good_type', $idGoodType)
+                    ->value('id');
+
+                if (!$brandId) {
+                    $brandId = DB::table('brand')->insertGetId([
+                        'name' => $infoItem->brand,
+                        'id_good_type' => $idGoodType,
+                    ]);
+                }
+
+                $modelId = DB::table('model')
+                    ->where('name', $infoItem->model)
+                    ->where('id_brand', $brandId)
+                    ->value('id');
+
+                if (!$modelId) {
+                    DB::table('model')->insert([
+                        'name' => $infoItem->model,
+                        'id_brand' => $brandId,
+                    ]);
+                }
+            }
+        }
     }
 
     /**
@@ -42,20 +114,8 @@ class CreateGoodTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('good_tables');
+        Schema::dropIfExists('model');
+        Schema::dropIfExists('brand');
+        Schema::dropIfExists('good_type');
     }
 }
-/*
- TODO запросы на данные из tyres
-module_catalog_info - brand and model
-
-SELECT * FROM `module_catalog_info`
-WHERE `model` IS NOT NULL
-AND `model` != ''
-AND `brand` IS NOT NULL
-AND `brand` != ''
-GROUP by model
-ORDER BY `module_catalog_info`.`model` ASC
-
-
-*/
