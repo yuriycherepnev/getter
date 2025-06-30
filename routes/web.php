@@ -13,9 +13,26 @@
 |
 */
 
+use App\Models\Catalog\Model;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Lumen\Routing\Router;
 
 $router->get('/', function () use ($router) {
+    $data = [
+        'name' => 'Новый продукт',
+        'id_brand' => 115
+    ];
+
+    $validator = Validator::make($data, Model::rules(), Model::messages());
+
+    if ($validator->fails()) {
+        $errors = $validator->errors();
+        var_dump($errors);
+    } else {
+        $brand = Model::create($validator->validated());
+        var_dump($brand);
+    }
+
     return $router->app->version();
 });
 

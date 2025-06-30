@@ -13,7 +13,6 @@ class CatalogController extends Controller
                 'price' => 999.99,
                 'category' => 'Электроника'
             ],
-            // ... остальные товары
         ];
     }
 }

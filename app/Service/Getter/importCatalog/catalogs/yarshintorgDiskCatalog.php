@@ -1,7 +1,7 @@
 <?php namespace App\Service\Getter\importCatalog\catalogs;
 
-use common\components\helpers\ArrayHelper;
-use console\models\getter\importCatalog\ImportCatalog;
+use App\Service\Getter\importCatalog\ImportCatalog;
+use Illuminate\Support\Arr;
 
 class yarshintorgDiskCatalog extends ImportCatalog
 {
@@ -108,8 +108,8 @@ class yarshintorgDiskCatalog extends ImportCatalog
     protected function validateGood($good)
     {
         $newGood = $this->validateProductArray((array)$good);
-        $restspb = ArrayHelper::remove($newGood, 'restspb', 0);
-        $rest = ArrayHelper::remove($newGood, 'rest', 0);
+        $restspb = Arr::pull($newGood, 'restspb', 0);
+        $rest = Arr::pull($newGood, 'rest', 0);
         if ($restspb) {
             $qnt = $restspb;
             $custom = $this->customs['spb'];
@@ -129,12 +129,12 @@ class yarshintorgDiskCatalog extends ImportCatalog
         if (preg_match('/_[\d]{4}$/', $good['article'])) {
             return false;
         }
-        $id = ArrayHelper::getValue($newGood, 'id', 0);
-        $brand = ArrayHelper::getValue($newGood, 'brand', 0);
-        $model = ArrayHelper::getValue($newGood, 'model', 0);
-        $name = ArrayHelper::getValue($newGood, 'name', 0);
-        $priceCustom = ArrayHelper::getValue($newGood, 'price_prime_cost', 0);
-        $color = mb_strtoupper(ArrayHelper::getValue($newGood, 'color', ''));
+        $id = data_get($newGood, 'id', 0);
+        $brand = data_get($newGood, 'brand', 0);
+        $model = data_get($newGood, 'model', 0);
+        $name = data_get($newGood, 'name', 0);
+        $priceCustom = data_get($newGood, 'price_prime_cost', 0);
+        $color = mb_strtoupper(data_get($newGood, 'color', ''));
 
         if ($id == '9139485') { //Палет
             return false;
@@ -208,17 +208,17 @@ class yarshintorgDiskCatalog extends ImportCatalog
 
         $idWithCustom = $custom . "z" . trim(preg_replace("/[\(\)\-]+/", '', $id));
 
-        ArrayHelper::setValue($newGood, 'markdown', $markdown);
-        ArrayHelper::setValue($newGood, 'color', $color);
-        ArrayHelper::setValue($newGood, 'markdown_reason', $markdownReason);
-        ArrayHelper::setValue($newGood, 'custom', $custom);
-        ArrayHelper::setValue($newGood, 'brand', $brand);
-        ArrayHelper::setValue($newGood, 'model', $model);
-        ArrayHelper::setValue($newGood, 'qnt', $qnt);
-        ArrayHelper::setValue($newGood, 'car_brand', $car);
-        ArrayHelper::setValue($newGood, 'price_prime_cost', $priceCustom);
-        ArrayHelper::setValue($newGood, ImportCatalog::PROVIDER_ARTICLE, strval($id));
-        ArrayHelper::setValue($newGood, 'id', $idWithCustom);
+        data_set($newGood, 'markdown', $markdown);
+        data_set($newGood, 'color', $color);
+        data_set($newGood, 'markdown_reason', $markdownReason);
+        data_set($newGood, 'custom', $custom);
+        data_set($newGood, 'brand', $brand);
+        data_set($newGood, 'model', $model);
+        data_set($newGood, 'qnt', $qnt);
+        data_set($newGood, 'car_brand', $car);
+        data_set($newGood, 'price_prime_cost', $priceCustom);
+        data_set($newGood, ImportCatalog::PROVIDER_ARTICLE, strval($id));
+        data_set($newGood, 'id', $idWithCustom);
 
         return $newGood;
     }

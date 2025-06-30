@@ -1,9 +1,6 @@
 <?php namespace App\Service\Getter\importCatalog\catalogs;
 
-use common\components\helpers\ArrayHelper;
-use console\models\getter\GetterServiceModel;
-use console\models\getter\importCatalog\ImportCatalog;
-use yii\console\Exception;
+use App\Service\Getter\importCatalog\ImportCatalog;
 
 class yarshintorgTyreCatalog extends ImportCatalog
 {
@@ -59,8 +56,8 @@ class yarshintorgTyreCatalog extends ImportCatalog
     protected function validateGood($good)
     {
         $newGood = $this->validateProductArray((array)$good);
-        $restspb = ArrayHelper::getValue($newGood, 'restspb', 0);
-        $rest = ArrayHelper::getValue($newGood, 'rest', 0);
+        $restspb = data_get($newGood, 'restspb', 0);
+        $rest = data_get($newGood, 'rest', 0);
         if ($restspb) {
             $qnt = $restspb;
             $custom = $this->customs['spb'];
@@ -80,7 +77,7 @@ class yarshintorgTyreCatalog extends ImportCatalog
             return false;
         }
         $multiseason = 0;
-        $season = ArrayHelper::getValue($newGood, 'season', 0);
+        $season = data_get($newGood, 'season', 0);
         if ($season === 'summer') {
             $season = 0;
         } elseif ($season === 'winter') {
@@ -93,16 +90,16 @@ class yarshintorgTyreCatalog extends ImportCatalog
         if (preg_match('/_[\d]{4}$/', $good['article'])) {
             return false;
         }
-        $type = ArrayHelper::getValue($newGood, 'type', null);
-        $id = ArrayHelper::getValue($newGood, 'id', 0);
-        $name = ArrayHelper::getValue($newGood, 'name', '');
-        $brand = ArrayHelper::getValue($newGood, 'brand', '');
-        $model = ArrayHelper::getValue($newGood, 'model', '');
-        $w = ArrayHelper::getValue($newGood, 'w', 0);
-        $h = ArrayHelper::getValue($newGood, 'h', 0);
-        $d = ArrayHelper::getValue($newGood, 'd', 0);
-        $speedIndex = ArrayHelper::getValue($newGood, 'index_speed', '');
-        $loadIndex = ArrayHelper::getValue($newGood, 'index_load', '');
+        $type = data_get($newGood, 'type', null);
+        $id = data_get($newGood, 'id', 0);
+        $name = data_get($newGood, 'name', '');
+        $brand = data_get($newGood, 'brand', '');
+        $model = data_get($newGood, 'model', '');
+        $w = data_get($newGood, 'w', 0);
+        $h = data_get($newGood, 'h', 0);
+        $d = data_get($newGood, 'd', 0);
+        $speedIndex = data_get($newGood, 'index_speed', '');
+        $loadIndex = data_get($newGood, 'index_load', '');
 
         if (!in_array(strtolower($brand), self::ALLOWED_BRAND)) {
             ImportCatalog::$errors['notAllowedBrand'][] = $id;
@@ -146,22 +143,22 @@ class yarshintorgTyreCatalog extends ImportCatalog
 
         $idWithCustom =  $custom . "z" . $id;
 
-        ArrayHelper::setValue($newGood, 'for_spike', $forSpike);
-        ArrayHelper::setValue($newGood, 'qnt', $qnt);
-        ArrayHelper::setValue($newGood, 'extra_load', $extraLoad);
-        ArrayHelper::setValue($newGood, 'index_speed', $speedIndex);
-        ArrayHelper::setValue($newGood, 'index_load', $loadIndex);
-        ArrayHelper::setValue($newGood, 'w', $w);
-        ArrayHelper::setValue($newGood, 'h', $h);
-        ArrayHelper::setValue($newGood, 'd', $d);
-        ArrayHelper::setValue($newGood, 'c', $c);
-        ArrayHelper::setValue($newGood, 'brand', $brand);
-        ArrayHelper::setValue($newGood, 'model', $model);
-        ArrayHelper::setValue($newGood, 'custom', $custom);
-        ArrayHelper::setValue($newGood, 'season', $season);
-        ArrayHelper::setValue($newGood, 'multiseason', $multiseason);
-        ArrayHelper::setValue($newGood, ImportCatalog::PROVIDER_ARTICLE, $id);
-        ArrayHelper::setValue($newGood, 'id', $idWithCustom);
+        data_set($newGood, 'for_spike', $forSpike);
+        data_set($newGood, 'qnt', $qnt);
+        data_set($newGood, 'extra_load', $extraLoad);
+        data_set($newGood, 'index_speed', $speedIndex);
+        data_set($newGood, 'index_load', $loadIndex);
+        data_set($newGood, 'w', $w);
+        data_set($newGood, 'h', $h);
+        data_set($newGood, 'd', $d);
+        data_set($newGood, 'c', $c);
+        data_set($newGood, 'brand', $brand);
+        data_set($newGood, 'model', $model);
+        data_set($newGood, 'custom', $custom);
+        data_set($newGood, 'season', $season);
+        data_set($newGood, 'multiseason', $multiseason);
+        data_set($newGood, ImportCatalog::PROVIDER_ARTICLE, $id);
+        data_set($newGood, 'id', $idWithCustom);
 
         return $newGood;
     }
