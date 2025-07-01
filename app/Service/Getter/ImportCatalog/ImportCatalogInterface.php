@@ -1,4 +1,4 @@
-<?php namespace App\Service\Getter\importCatalog;
+<?php namespace App\Service\Getter\ImportCatalog;
 
 interface ImportCatalogInterface
 {

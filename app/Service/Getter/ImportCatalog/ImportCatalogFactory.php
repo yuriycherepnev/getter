@@ -1,4 +1,4 @@
-<?php namespace App\Service\Getter\importCatalog;
+<?php namespace App\Service\Getter\ImportCatalog;
 
 use common\models\catalog\Customs;
 use common\models\Company;

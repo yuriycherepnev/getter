@@ -1,10 +1,4 @@
-<?php namespace App\Service\Getter\importCatalog;
-
-use common\components\helpers\ArrayHelper;
-use common\models\Company;
-use console\models\getter\importCatalog\ImportCatalogInterface;
-use Yii;
-use yii\console\Exception;
+<?php namespace App\Service\Getter\ImportCatalog;
 
 abstract class ImportCatalog implements ImportCatalogInterface
 {

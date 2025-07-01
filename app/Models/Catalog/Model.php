@@ -2,6 +2,12 @@
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
+/**
+ * Class Model
+ * @property int $id
+ * @property string $name
+ * @property int $id_brand
+ */
 class Model extends BaseModel
 {
     /**
@@ -44,21 +50,6 @@ class Model extends BaseModel
         return [
             'name' => 'required|string|max:255',
             'id_brand' => 'required|integer|exists:brand,id'
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public static function messages(): array
-    {
-        return [
-            'name.required' => 'Поле "Название" обязательно для заполнения',
-            'name.string' => 'Название должно быть строкой',
-            'name.max' => 'Название не должно превышать 255 символов',
-            'id_brand.required' => 'Необходимо указать бренд',
-            'id_brand.integer' => 'ID бренда должен быть целым числом',
-            'id_brand.exists' => 'Указанный бренд не существует'
         ];
     }
 }

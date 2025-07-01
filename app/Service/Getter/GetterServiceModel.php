@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Service\Getter;
+<?php namespace App\Service\Getter;
 
 class GetterServiceModel
 {

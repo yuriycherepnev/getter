@@ -20,10 +20,18 @@ use Laravel\Lumen\Routing\Router;
 $router->get('/', function () use ($router) {
     $data = [
         'name' => 'Новый продукт',
-        'id_brand' => 115
+        'id_brand' => 999999
     ];
 
-    $validator = Validator::make($data, Model::rules(), Model::messages());
+    echo '<pre>';
+
+    $validator = Validator::make($data, Model::rules());
+
+    $model = Model::query()->find(1);
+    if ($model) {
+        /** @var Model $model */
+        var_dump($model->name);
+    }
 
     if ($validator->fails()) {
         $errors = $validator->errors();

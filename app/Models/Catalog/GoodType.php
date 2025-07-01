@@ -3,17 +3,17 @@
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Brand
+ * Class Model
  * @property int $id
  * @property string $name
- * @property int $id_good_type
+ * @property string $name_ru
  */
-class Brand extends Model
+class GoodType extends Model
 {
     /**
      * @var string
      */
-    protected $table = 'brand';
+    protected $table = 'good_type';
 
     /**
      * @var boolean
@@ -30,7 +30,7 @@ class Brand extends Model
      */
     protected $fillable = [
         'name',
-        'id_good_type'
+        'name_ru',
     ];
 
     /**
@@ -39,7 +39,7 @@ class Brand extends Model
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',
-        'id_good_type' => 'integer'
+        'name_ru' => 'string',
     ];
 
     /**
@@ -49,7 +49,7 @@ class Brand extends Model
     {
         return [
             'name' => 'required|string|max:255',
-            'id_good_type' => 'required|integer|exists:good_type,id'
+            'name_ru' => 'required|string|max:255',
         ];
     }
 }

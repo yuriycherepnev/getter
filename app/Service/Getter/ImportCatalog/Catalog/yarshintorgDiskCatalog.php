@@ -1,6 +1,6 @@
-<?php namespace App\Service\Getter\importCatalog\catalogs;
+<?php namespace App\Service\Getter\ImportCatalog\Catalog;
 
-use App\Service\Getter\importCatalog\ImportCatalog;
+use App\Service\Getter\ImportCatalog\ImportCatalog;
 use Illuminate\Support\Arr;
 
 class yarshintorgDiskCatalog extends ImportCatalog
