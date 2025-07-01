@@ -1,12 +1,15 @@
 <?php namespace App\Models\Catalog;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Model
+ * Class GoodType
  * @property int $id
  * @property string $name
  * @property string $name_ru
+ *
+ * @method static Builder|static query()
  */
 class GoodType extends Model
 {
@@ -19,11 +22,6 @@ class GoodType extends Model
      * @var boolean
      */
     public $timestamps = false;
-
-    /**
-     * @var string
-     */
-    protected $primaryKey = 'id';
 
     /**
      * @var array

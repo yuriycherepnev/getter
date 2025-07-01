@@ -29,7 +29,6 @@ $router->get('/', function () use ($router) {
 
     $model = Model::query()->find(1);
     if ($model) {
-        /** @var Model $model */
         var_dump($model->name);
     }
 

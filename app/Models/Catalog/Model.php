@@ -1,5 +1,6 @@
 <?php namespace App\Models\Catalog;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
 /**
@@ -7,6 +8,8 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
  * @property int $id
  * @property string $name
  * @property int $id_brand
+ *
+ * @method static Builder|static query()
  */
 class Model extends BaseModel
 {
@@ -19,11 +22,6 @@ class Model extends BaseModel
      * @var boolean
      */
     public $timestamps = false;
-
-    /**
-     * @var string
-     */
-    protected $primaryKey = 'id';
 
     /**
      * @var array

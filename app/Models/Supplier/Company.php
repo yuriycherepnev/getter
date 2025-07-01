@@ -1,22 +1,21 @@
-<?php namespace App\Models\Catalog;
+<?php namespace App\Models\Supplier;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Brand
+ * Class Company
  * @property int $id
  * @property string $name
- * @property int $id_good_type
  *
  * @method static Builder|static query()
  */
-class Brand extends Model
+class Company extends Model
 {
     /**
      * @var string
      */
-    protected $table = 'brand';
+    protected $table = 'company';
 
     /**
      * @var boolean
@@ -24,11 +23,15 @@ class Brand extends Model
     public $timestamps = false;
 
     /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
      * @var array
      */
     protected $fillable = [
         'name',
-        'id_good_type'
     ];
 
     /**
@@ -37,7 +40,6 @@ class Brand extends Model
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',
-        'id_good_type' => 'integer'
     ];
 
     /**
@@ -47,7 +49,6 @@ class Brand extends Model
     {
         return [
             'name' => 'required|string|max:255',
-            'id_good_type' => 'required|integer|exists:good_type,id'
         ];
     }
 }

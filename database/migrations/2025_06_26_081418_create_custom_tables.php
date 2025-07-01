@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGetterTables extends Migration
+class CreateCustomTables extends Migration
 {
     const COMPANIES = [
         1 => "exclusive",

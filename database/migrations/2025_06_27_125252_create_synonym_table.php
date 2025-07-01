@@ -14,7 +14,7 @@ class CreateSynonymTable extends Migration
      */
     public function up()
     {
-        Schema::create('synonym', function (Blueprint $table) {
+        Schema::create('brand_model_synonym', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_model');
             $table->string('brand_synonym');
@@ -42,7 +42,7 @@ class CreateSynonymTable extends Migration
                 ->value('id');
 
             if ($modelId) {
-                DB::table('synonym')->insert([
+                DB::table('brand_model_synonym')->insert([
                     'id_model' => $modelId,
                     'brand_synonym' => $automaticItem->synonym1,
                     'model_synonym' => $automaticItem->synonym2,
@@ -58,6 +58,6 @@ class CreateSynonymTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('synonym');
+        Schema::dropIfExists('brand_model_synonym');
     }
 }

@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGoodTables extends Migration
+class CreateCatalogTables extends Migration
 {
     const GOOD_TYPE = [
         'disk' => 'Диски',
