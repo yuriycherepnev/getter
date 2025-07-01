@@ -1,6 +1,7 @@
 <?php namespace App\Service\Getter\ImportCatalog\Catalog;
 
 use App\Service\Getter\ImportCatalog\ImportCatalog;
+use Exception;
 
 class yarshintorgTyreCatalog extends ImportCatalog
 {
