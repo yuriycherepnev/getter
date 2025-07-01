@@ -80,26 +80,28 @@ class CreateCatalogTables extends Migration
             }
 
             if ($idGoodType) {
+                $brandName = trim($infoItem->brand);
                 $brandId = DB::table('brand')
-                    ->where('name', $infoItem->brand)
+                    ->where('name', $brandName)
                     ->where('id_good_type', $idGoodType)
                     ->value('id');
 
                 if (!$brandId) {
                     $brandId = DB::table('brand')->insertGetId([
-                        'name' => $infoItem->brand,
+                        'name' => $brandName,
                         'id_good_type' => $idGoodType,
                     ]);
                 }
+                $modelName = trim($infoItem->model);
 
                 $modelId = DB::table('model')
-                    ->where('name', $infoItem->model)
+                    ->where('name', $modelName)
                     ->where('id_brand', $brandId)
                     ->value('id');
 
                 if (!$modelId) {
                     DB::table('model')->insert([
-                        'name' => $infoItem->model,
+                        'name' => $modelName,
                         'id_brand' => $brandId,
                     ]);
                 }

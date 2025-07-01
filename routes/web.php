@@ -30,6 +30,8 @@ $router->get('/', function () use ($router) {
     $model = Model::query()->find(1);
     if ($model) {
         var_dump($model->name);
+
+        var_dump($model->brand);
     }
 
     if ($validator->fails()) {

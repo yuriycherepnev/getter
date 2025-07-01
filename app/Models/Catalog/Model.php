@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as BaseModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Model
@@ -49,5 +50,15 @@ class Model extends BaseModel
             'name' => 'required|string|max:255',
             'id_brand' => 'required|integer|exists:brand,id'
         ];
+    }
+
+    /**
+     * Relationship to the Model
+     *
+     * @return BelongsTo
+     */
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class, 'id_brand');
     }
 }

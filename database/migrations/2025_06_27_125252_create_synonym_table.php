@@ -37,15 +37,16 @@ class CreateSynonymTable extends Migration
             ->get();
 
         foreach ($automaticBrandModels as $automaticItem) {
+            $automaticModel = trim($automaticItem->model);
             $modelId = DB::table('model')
-                ->where('name', $automaticItem->model)
+                ->where('name', $automaticModel)
                 ->value('id');
 
             if ($modelId) {
                 DB::table('brand_model_synonym')->insert([
                     'id_model' => $modelId,
-                    'brand_synonym' => $automaticItem->synonym1,
-                    'model_synonym' => $automaticItem->synonym2,
+                    'brand_synonym' => trim($automaticItem->synonym1),
+                    'model_synonym' => trim($automaticItem->synonym2),
                 ]);
             }
         }
