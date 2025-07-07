@@ -117,8 +117,6 @@ class yarshintorgDiskCatalog extends ImportCatalog
             $qnt = $rest;
             $custom = $this->customs['msc'];
         }
-        $this->addCustomCount($custom);
-
         if (!$newGood) {
             ImportCatalog::$errors['notSetGood'] =
                 (isset(ImportCatalog::$errors['notSetGood'])) ?
@@ -129,12 +127,12 @@ class yarshintorgDiskCatalog extends ImportCatalog
         if (preg_match('/_[\d]{4}$/', $good['article'])) {
             return false;
         }
-        $id = data_get($newGood, 'id', 0);
-        $brand = data_get($newGood, 'brand', 0);
-        $model = data_get($newGood, 'model', 0);
-        $name = data_get($newGood, 'name', 0);
-        $priceCustom = data_get($newGood, 'price_prime_cost', 0);
-        $color = mb_strtoupper(data_get($newGood, 'color', ''));
+        $id = Arr::get($newGood, 'id', 0);
+        $brand = Arr::get($newGood, 'brand', 0);
+        $model = Arr::get($newGood, 'model', 0);
+        $name = Arr::get($newGood, 'name', 0);
+        $priceCustom = Arr::get($newGood, 'price_prime_cost', 0);
+        $color = mb_strtoupper(Arr::get($newGood, 'color', ''));
 
         if ($id == '9139485') { //Палет
             return false;
@@ -208,17 +206,17 @@ class yarshintorgDiskCatalog extends ImportCatalog
 
         $idWithCustom = $custom . "z" . trim(preg_replace("/[\(\)\-]+/", '', $id));
 
-        data_set($newGood, 'markdown', $markdown);
-        data_set($newGood, 'color', $color);
-        data_set($newGood, 'markdown_reason', $markdownReason);
-        data_set($newGood, 'custom', $custom);
-        data_set($newGood, 'brand', $brand);
-        data_set($newGood, 'model', $model);
-        data_set($newGood, 'qnt', $qnt);
-        data_set($newGood, 'car_brand', $car);
-        data_set($newGood, 'price_prime_cost', $priceCustom);
-        data_set($newGood, ImportCatalog::PROVIDER_ARTICLE, strval($id));
-        data_set($newGood, 'id', $idWithCustom);
+        Arr::set($newGood, 'markdown', $markdown);
+        Arr::set($newGood, 'color', $color);
+        Arr::set($newGood, 'markdown_reason', $markdownReason);
+        Arr::set($newGood, 'custom', $custom);
+        Arr::set($newGood, 'brand', $brand);
+        Arr::set($newGood, 'model', $model);
+        Arr::set($newGood, 'qnt', $qnt);
+        Arr::set($newGood, 'car_brand', $car);
+        Arr::set($newGood, 'price_prime_cost', $priceCustom);
+        Arr::set($newGood, ImportCatalog::PROVIDER_ARTICLE, strval($id));
+        Arr::set($newGood, 'id', $idWithCustom);
 
         return $newGood;
     }

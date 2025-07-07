@@ -1,6 +1,7 @@
 <?php namespace App\Service\Getter\ImportCatalog\Catalog;
 
 use App\Service\Getter\ImportCatalog\ImportCatalog;
+use Illuminate\Support\Arr;
 
 class shinServiceDiskCatalog extends ImportCatalog
 {
@@ -43,7 +44,7 @@ class shinServiceDiskCatalog extends ImportCatalog
      * @param array $goods
      * @return array
      */
-    public function validateGoods($goods)
+    public function validateGoods($goods): array
     {
         $newArr = [];
         if ($goods && isset($goods[2]['wheel'])) {
@@ -81,7 +82,6 @@ class shinServiceDiskCatalog extends ImportCatalog
      */
     protected function validateGood($good, $custom, $stock)
     {
-        $this->addCustomCount($custom);
         try {
             $newGood = [];
             $newGood = $this->validateProductArray((array)$good);
@@ -92,9 +92,9 @@ class shinServiceDiskCatalog extends ImportCatalog
                 return false;
             }
 
-            $brand = ArrayHelper::getValue($newGood, 'brand', '');
-            $id = ArrayHelper::getValue($newGood, 'id', '');
-            $size = ArrayHelper::remove($newGood, 'size', '');
+            $brand = Arr::get($newGood, 'brand', '');
+            $id = Arr::get($newGood, 'id', '');
+            $size = Arr::pull($newGood, 'size', '');
 
             if (!in_array($brand, $this->allowedBrands)) {
                 ImportCatalog::$errors['notAllowedBrand'][] = $id;
@@ -122,13 +122,13 @@ class shinServiceDiskCatalog extends ImportCatalog
             $dNew = isset($sizeExploded[0]) ? trim($sizeExploded[0]) : '';
             $wNew = isset($sizeExploded[0]) ? str_replace('J', '', trim($sizeExploded[1])) : '';
 
-            ArrayHelper::setValue($newGood, ImportCatalog::PROVIDER_ARTICLE, $id);
-            ArrayHelper::setValue($newGood, 'id', $custom . "z" . $id);
-            ArrayHelper::setValue($newGood, 'custom', $custom);
-            ArrayHelper::setValue($newGood, 'brand', $brand);
-            ArrayHelper::setValue($newGood, 'qnt', $qnt);
-            ArrayHelper::setValue($newGood, 'd', $dNew);
-            ArrayHelper::setValue($newGood, 'w', $wNew);
+            Arr::set($newGood, ImportCatalog::PROVIDER_ARTICLE, $id);
+            Arr::set($newGood, 'id', $custom . "z" . $id);
+            Arr::set($newGood, 'custom', $custom);
+            Arr::set($newGood, 'brand', $brand);
+            Arr::set($newGood, 'qnt', $qnt);
+            Arr::set($newGood, 'd', $dNew);
+            Arr::set($newGood, 'w', $wNew);
 
             return $newGood;
         } catch (\Exception $e) {

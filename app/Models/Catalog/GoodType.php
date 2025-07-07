@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GoodType extends Model
 {
+    const TYPE_TYRE = 'tyre';
+    const TYPE_DISK = 'disk';
+
     /**
      * @var string
      */

@@ -1,5 +1,7 @@
 <?php namespace App\Service\Getter\ImportCatalog;
 
+use Illuminate\Support\Arr;
+
 abstract class ImportCatalog implements ImportCatalogInterface
 {
     const PROVIDER_ARTICLE = 'provider_article';
@@ -56,6 +58,8 @@ abstract class ImportCatalog implements ImportCatalogInterface
     /** @var array|int */
     protected $customCount = [];
 
+    abstract public function initParseRules();
+
     /**
      * ImportCatalog constructor.
      * @param array $pathFile
@@ -75,8 +79,6 @@ abstract class ImportCatalog implements ImportCatalogInterface
             $this->customCount[$customs] = 0;
         }
     }
-
-    abstract public function initParseRules();
 
     /**
      * @param string $textInfo
@@ -107,7 +109,7 @@ abstract class ImportCatalog implements ImportCatalogInterface
      */
     public static function getImportCatalogPath($company): ?array
     {
-        return ArrayHelper::getValue(Yii::$app->params, 'getter.importCatalogPath.' . $company->name);
+        return Arr::get(Yii::$app->params, 'getter.importCatalogPath.' . $company->name);
     }
 
     /**
@@ -122,7 +124,7 @@ abstract class ImportCatalog implements ImportCatalogInterface
      * @param array $goods
      * @return array
      */
-    public function validateGoods($goods)
+    public function validateGoods($goods): array
     {
         $newArr = [];
         if ($goods) {
@@ -156,7 +158,7 @@ abstract class ImportCatalog implements ImportCatalogInterface
     /**
      * @return array
      */
-    public function getParamsForParse(array $config = [])
+    public function getParamsForParse(array $config = []): array
     {
         return [];
     }
@@ -164,7 +166,7 @@ abstract class ImportCatalog implements ImportCatalogInterface
     /**
      * @return string
      */
-    public function getExtensionFile()
+    public function getExtensionFile(): string
     {
         return static::$extFile;
     }
@@ -177,7 +179,6 @@ abstract class ImportCatalog implements ImportCatalogInterface
     protected function validateProductArray($productArray, $params = [])
     {
         $params = $params ?: $this->params;
-//        $this->dellSpecialChars($productArray);
         $trueArray = [];
         foreach ($params as $k => $v) {
             if ($v['require'] && isset($productArray[$k])) {
@@ -209,33 +210,5 @@ abstract class ImportCatalog implements ImportCatalogInterface
         }
 
         return $trueArray;
-    }
-
-    /**
-     * @param array $good
-     * @return array
-     */
-    private function dellSpecialChars(&$good)
-    {
-        $regexToReplace = "/[\'\"><]*/";
-
-        foreach ($good as &$item) {
-            $item = preg_replace($regexToReplace, '', $item);
-            $item = preg_replace('/[,]/', '.', $item);
-        }
-
-        return $good;
-    }
-
-    /**
-     * @param $customId
-     * @return void
-     */
-    function addCustomCount($customId): void
-    {
-        if (!array_key_exists($customId, $this->customCount)) {
-            $this->customCount[$customId] = 0;
-        }
-        $this->customCount[$customId]++;
     }
 }

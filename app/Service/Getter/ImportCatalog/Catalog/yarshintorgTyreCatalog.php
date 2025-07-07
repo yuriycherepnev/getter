@@ -2,6 +2,7 @@
 
 use App\Service\Getter\ImportCatalog\ImportCatalog;
 use Exception;
+use Illuminate\Support\Arr;
 
 class yarshintorgTyreCatalog extends ImportCatalog
 {
@@ -57,8 +58,8 @@ class yarshintorgTyreCatalog extends ImportCatalog
     protected function validateGood($good)
     {
         $newGood = $this->validateProductArray((array)$good);
-        $restspb = data_get($newGood, 'restspb', 0);
-        $rest = data_get($newGood, 'rest', 0);
+        $restspb = Arr::get($newGood, 'restspb', 0);
+        $rest = Arr::get($newGood, 'rest', 0);
         if ($restspb) {
             $qnt = $restspb;
             $custom = $this->customs['spb'];
@@ -66,7 +67,6 @@ class yarshintorgTyreCatalog extends ImportCatalog
             $qnt = $rest;
             $custom = $this->customs['msc'];
         }
-        $this->addCustomCount($custom);
 
         if (preg_match('/[(]20[0-9]{2}[)]/', $good['name'])) {
             return false;
@@ -78,7 +78,7 @@ class yarshintorgTyreCatalog extends ImportCatalog
             return false;
         }
         $multiseason = 0;
-        $season = data_get($newGood, 'season', 0);
+        $season = Arr::get($newGood, 'season', 0);
         if ($season === 'summer') {
             $season = 0;
         } elseif ($season === 'winter') {
@@ -91,16 +91,16 @@ class yarshintorgTyreCatalog extends ImportCatalog
         if (preg_match('/_[\d]{4}$/', $good['article'])) {
             return false;
         }
-        $type = data_get($newGood, 'type', null);
-        $id = data_get($newGood, 'id', 0);
-        $name = data_get($newGood, 'name', '');
-        $brand = data_get($newGood, 'brand', '');
-        $model = data_get($newGood, 'model', '');
-        $w = data_get($newGood, 'w', 0);
-        $h = data_get($newGood, 'h', 0);
-        $d = data_get($newGood, 'd', 0);
-        $speedIndex = data_get($newGood, 'index_speed', '');
-        $loadIndex = data_get($newGood, 'index_load', '');
+        $type = Arr::get($newGood, 'type', null);
+        $id = Arr::get($newGood, 'id', 0);
+        $name = Arr::get($newGood, 'name', '');
+        $brand = Arr::get($newGood, 'brand', '');
+        $model = Arr::get($newGood, 'model', '');
+        $w = Arr::get($newGood, 'w', 0);
+        $h = Arr::get($newGood, 'h', 0);
+        $d = Arr::get($newGood, 'd', 0);
+        $speedIndex = Arr::get($newGood, 'index_speed', '');
+        $loadIndex = Arr::get($newGood, 'index_load', '');
 
         if (!in_array(strtolower($brand), self::ALLOWED_BRAND)) {
             ImportCatalog::$errors['notAllowedBrand'][] = $id;
@@ -144,22 +144,22 @@ class yarshintorgTyreCatalog extends ImportCatalog
 
         $idWithCustom =  $custom . "z" . $id;
 
-        data_set($newGood, 'for_spike', $forSpike);
-        data_set($newGood, 'qnt', $qnt);
-        data_set($newGood, 'extra_load', $extraLoad);
-        data_set($newGood, 'index_speed', $speedIndex);
-        data_set($newGood, 'index_load', $loadIndex);
-        data_set($newGood, 'w', $w);
-        data_set($newGood, 'h', $h);
-        data_set($newGood, 'd', $d);
-        data_set($newGood, 'c', $c);
-        data_set($newGood, 'brand', $brand);
-        data_set($newGood, 'model', $model);
-        data_set($newGood, 'custom', $custom);
-        data_set($newGood, 'season', $season);
-        data_set($newGood, 'multiseason', $multiseason);
-        data_set($newGood, ImportCatalog::PROVIDER_ARTICLE, $id);
-        data_set($newGood, 'id', $idWithCustom);
+        Arr::set($newGood, 'for_spike', $forSpike);
+        Arr::set($newGood, 'qnt', $qnt);
+        Arr::set($newGood, 'extra_load', $extraLoad);
+        Arr::set($newGood, 'index_speed', $speedIndex);
+        Arr::set($newGood, 'index_load', $loadIndex);
+        Arr::set($newGood, 'w', $w);
+        Arr::set($newGood, 'h', $h);
+        Arr::set($newGood, 'd', $d);
+        Arr::set($newGood, 'c', $c);
+        Arr::set($newGood, 'brand', $brand);
+        Arr::set($newGood, 'model', $model);
+        Arr::set($newGood, 'custom', $custom);
+        Arr::set($newGood, 'season', $season);
+        Arr::set($newGood, 'multiseason', $multiseason);
+        Arr::set($newGood, ImportCatalog::PROVIDER_ARTICLE, $id);
+        Arr::set($newGood, 'id', $idWithCustom);
 
         return $newGood;
     }

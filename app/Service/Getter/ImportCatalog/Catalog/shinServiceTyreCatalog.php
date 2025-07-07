@@ -1,6 +1,7 @@
 <?php namespace App\Service\Getter\ImportCatalog\Catalog;
 
 use App\Service\Getter\ImportCatalog\ImportCatalog;
+use Illuminate\Support\Arr;
 
 class shinServiceTyreCatalog extends ImportCatalog
 {
@@ -44,7 +45,7 @@ class shinServiceTyreCatalog extends ImportCatalog
      * @param $goods
      * @return array
      */
-    public function validateGoods($goods)
+    public function validateGoods($goods): array
     {
         $newArr = [];
         if ($goods && isset($goods[1]['tire'])) {
@@ -82,7 +83,6 @@ class shinServiceTyreCatalog extends ImportCatalog
      */
     protected function validateGood($good, $custom, $stock)
     {
-        $this->addCustomCount($custom);
         try {
             $newGood = [];
             $good['runflat'] = (isset($good['runflat']) && $good['runflat'] == 'Y') ? 1 : 0;
@@ -94,12 +94,12 @@ class shinServiceTyreCatalog extends ImportCatalog
                 return false;
             }
 
-            $w = data_get($newGood, 'w', '');
-            $h = data_get($newGood, 'h', '');
-            $season = data_get($newGood, 'season', '');
-            $load = ArrayHelper::remove($newGood, 'load', '');
-            $id = data_get($newGood, 'id', '');
-            $d = data_get($newGood, 'd', '');
+            $w = Arr::get($newGood, 'w', '');
+            $h = Arr::get($newGood, 'h', '');
+            $season = Arr::get($newGood, 'season', '');
+            $load = Arr::pull($newGood, 'load', '');
+            $id = Arr::get($newGood, 'id', '');
+            $d = Arr::get($newGood, 'd', '');
 
             if (array_key_exists($season, self::SEASONS)) {
                 $season = self::SEASONS[$season];
@@ -139,19 +139,19 @@ class shinServiceTyreCatalog extends ImportCatalog
                 $markdownYear = 'Год выпуска ' . $good['prod_year'];
             }
 
-            ArrayHelper::setValue($newGood, ImportCatalog::PROVIDER_ARTICLE, $id);
-            ArrayHelper::setValue($newGood, 'id', $custom . "z" . $id);
-            ArrayHelper::setValue($newGood, 'w', strval(intval($w)));
-            ArrayHelper::setValue($newGood, 'h', strval(floatval($h)));
-            ArrayHelper::setValue($newGood, 'd', $d);
-            ArrayHelper::setValue($newGood, 'qnt', $qnt);
-            ArrayHelper::setValue($newGood, 'season', $season);
-            ArrayHelper::setValue($newGood, 'custom', $custom);
-            ArrayHelper::setValue($newGood, 'index_load', $indexLoadNew);
-            ArrayHelper::setValue($newGood, 'extra_load', $extraLoad);
-            ArrayHelper::setValue($newGood, 'c', $c);
-            ArrayHelper::setValue($newGood, 'markdown', $markdown);
-            ArrayHelper::setValue($newGood, 'markdown_reason', $markdownYear);
+            Arr::set($newGood, ImportCatalog::PROVIDER_ARTICLE, $id);
+            Arr::set($newGood, 'id', $custom . "z" . $id);
+            Arr::set($newGood, 'w', strval(intval($w)));
+            Arr::set($newGood, 'h', strval(floatval($h)));
+            Arr::set($newGood, 'd', $d);
+            Arr::set($newGood, 'qnt', $qnt);
+            Arr::set($newGood, 'season', $season);
+            Arr::set($newGood, 'custom', $custom);
+            Arr::set($newGood, 'index_load', $indexLoadNew);
+            Arr::set($newGood, 'extra_load', $extraLoad);
+            Arr::set($newGood, 'c', $c);
+            Arr::set($newGood, 'markdown', $markdown);
+            Arr::set($newGood, 'markdown_reason', $markdownYear);
 
             return $newGood;
         } catch (\Exception $e) {

@@ -1,5 +1,6 @@
 <?php namespace App\Console\Getter;
 
+use App\Service\Getter\GetterServiceModel;
 use Illuminate\Console\Command;
 
 class RunCommand extends Command
@@ -8,7 +9,7 @@ class RunCommand extends Command
      * Название и сигнатура команды
      */
     protected $signature = 'getter:run
-                            {name : Обязательное имя}
+                            {goodType : Обязательное имя}
                             {--debug : Режим отладки}';
 
     /**
@@ -21,10 +22,11 @@ class RunCommand extends Command
      */
     public function handle()
     {
-        $name = $this->argument('name');
+        $goodType = $this->argument('goodType');
 
-        echo '<pre>';
-        var_dump($name);
-        die;
+        $service = new GetterServiceModel();
+        $service->parseGoods();
+
+
     }
 }

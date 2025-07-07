@@ -5,7 +5,7 @@ interface ImportCatalogInterface
     /**
      * @return string
      */
-    public function getExtensionFile();
+    public function getExtensionFile(): string;
 
     /**
      * @return array|string
@@ -13,25 +13,16 @@ interface ImportCatalogInterface
     public function getFilePath();
 
     /**
+     * @param array $config
      * @return array
      */
-    public function getParamsForParse(array $config = []);
-
-    /**
-     * @return array
-     */
-    public function getCustomCount();
-
-    /**
-     * @return void
-     */
-    public function addCustomCount($customId);
+    public function getParamsForParse(array $config = []): array;
 
     /**
      * @param array $goods
      * @return array
      */
-    public function validateGoods($goods);
+    public function validateGoods($goods): array;
 
     public function initParseRules();
 }
